@@ -1,11 +1,13 @@
 import { getDictionary, type Locale } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { connection } from "next/server";
 
 export default async function HomePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  await connection();
   const { locale } = await params;
   const dictionary = await getDictionary(locale as Locale);
   const { home } = dictionary as { home: { title: string; description: string } };
