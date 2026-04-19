@@ -1,0 +1,9 @@
+{
+  "home": {
+    "title": "Bienvenue",
+    "description": "Une application Next.js avec internationalisation."
+  },
+  "nav": {
+    "switchLanguage": "Changer de langue"
+  }
+}
