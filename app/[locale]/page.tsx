@@ -1,16 +1,14 @@
 import { getDictionary, type Locale } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { connection } from "next/server";
+import { Suspense } from "react";
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+async function HomeContent({ locale }: { locale: string }) {
   await connection();
-  const { locale } = await params;
   const dictionary = await getDictionary(locale as Locale);
-  const { home } = dictionary as { home: { title: string; description: string } };
+  const { home } = dictionary as {
+    home: { title: string; description: string };
+  };
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -24,5 +22,19 @@ export default async function HomePage({
         <LanguageSwitcher />
       </main>
     </div>
+  );
+}
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  return (
+    <Suspense fallback={null}>
+      <HomeContent locale={locale} />
+    </Suspense>
   );
 }
