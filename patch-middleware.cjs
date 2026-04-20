@@ -126,3 +126,13 @@ server.listen(port, host, () => {
 `);
 
 console.log("Patched middleware index.js — direct port binding.");
+
+// Remove middleware-manifest.json from the default compute server
+// to prevent the compute handler from re-running middleware logic
+const mwManifestPath = path.join(__dirname, ".omega", "compute", "default", ".next", "server", "middleware-manifest.json");
+if (fs.existsSync(mwManifestPath)) {
+  fs.unlinkSync(mwManifestPath);
+  console.log("Deleted middleware-manifest.json from compute/default.");
+} else {
+  console.log("No middleware-manifest.json found in compute/default, skipping.");
+}
